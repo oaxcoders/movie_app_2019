@@ -1,19 +1,31 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Detail() {
-  let location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
   console.log(location);
-  return (
-    <>
-      <h1>
-        {location.state.title}
-        <br />
-        <span> year: {location.state.year}</span>
-      </h1>
-      <img src={location.state.poster} alt={location.state.title} />
-      <p>{location.state.summary}</p>
-    </>
-  );
+
+  useEffect(() => {
+    if (location.state === null) {
+      navigate("/");
+    }
+  });
+
+  if (location.state) {
+    const { title } = location.state;
+    return (
+      <>
+        <h1>
+          {title}
+          <br />
+          <span> year: {location.state.year}</span>
+        </h1>
+        <img src={location.state.poster} alt={title} />
+        <p>{location.state.summary}</p>
+      </>
+    );
+  }
 }
 export default Detail;
