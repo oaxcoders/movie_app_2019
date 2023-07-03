@@ -1,51 +1,22 @@
 import React from "react";
-import axios from "axios";
-import Movie from "./Movie";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./routes/Home";
+import About from "./routes/About";
+import Detail from "./routes/Detail";
+import Navigation from "./components/Navigation";
 
-class App extends React.Component {
-  state = {
-    isLoading: true,
-    movies: [],
-  };
-  getMovies = async () => {
-    const {
-      data: {
-        data: { movies },
-      },
-    } = await axios.get(
-      "https://yts-proxy.nomadcoders1.now.sh/list_movies.json"
-    );
-    this.setState({ movies: movies, isLoading: false });
-  };
-  componentDidMount() {
-    this.getMovies();
-  }
-  render() {
-    const { isLoading, movies } = this.state;
-    return (
-      <section class="container">
-        {isLoading ? (
-          <div class="loader">
-            <span class="loader__text">Loading...</span>
-          </div>
-        ) : (
-          <div class="movies">
-            {movies.map((movie) => (
-              <Movie
-                key={movie.id}
-                id={movie.id}
-                year={movie.year}
-                title={movie.title}
-                summary={movie.summary}
-                poster={movie.medium_cover_image}
-                genres={movie.genres}
-              />
-            ))}
-          </div>
-        )}
-      </section>
-    );
-  }
+function App() {
+  return (
+    <BrowserRouter>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} exact={true} />
+        <Route path="/about" element={<About />} />
+        <Route path="/movie-detail" element={<Detail />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
+//Route 에 속성을 써줘야한다
+//exact={true} 는 이제 안써줘도 되는지? 확인해야함
 export default App;

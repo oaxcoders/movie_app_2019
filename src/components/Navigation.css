@@ -1,0 +1,7 @@
+.navigation {
+  display: flex;
+  height: 100px;
+  text-align: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
