@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./routes/Home";
 import About from "./routes/About";
@@ -17,6 +18,42 @@ function App() {
     </BrowserRouter>
   );
 }
-//Route 에 속성을 써줘야한다
-//exact={true} 는 이제 안써줘도 되는지? 확인해야함
+
+function TodoList() {
+  const [text, setText] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  const onChange = (e) => {
+    setText(e.target.value);
+  };
+  const onClick = () => {
+    setTodos([text, ...todos]);
+    setText("");
+  };
+  const onDelete = (item, index) => {
+    const filterTodos = [...todos];
+    const newFilterTodos = filterTodos.filter((it) => it !== item);
+    setTodos(newFilterTodos);
+  };
+  return (
+    <>
+      <h1>To Do List</h1>
+      <input type="text" value={text} onChange={onChange} />
+      <input type="submit" value="Do it" onClick={onClick} />
+      <ul>
+        {todos.map((item, index) => (
+          <li key={index}>
+            {item}{" "}
+            <input
+              type="button"
+              value="삭제"
+              onClick={() => onDelete(item, index)}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
 export default App;
